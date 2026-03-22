@@ -30,9 +30,9 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
       <div className="flex items-center justify-between mb-5 px-1">
         <button
           onClick={onPrevMonth}
-          className="p-2.5 hover:bg-gray-100 rounded-full transition-colors active:scale-90"
+          className="p-2.5 hover:bg-indigo-50 rounded-full transition-colors active:scale-90"
         >
-          <ChevronLeft className="w-6 h-6 text-gray-600" />
+          <ChevronLeft className="w-6 h-6 text-indigo-400" />
         </button>
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-extrabold text-gray-800">
@@ -46,9 +46,9 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
         </div>
         <button
           onClick={onNextMonth}
-          className="p-2.5 hover:bg-gray-100 rounded-full transition-colors active:scale-90"
+          className="p-2.5 hover:bg-indigo-50 rounded-full transition-colors active:scale-90"
         >
-          <ChevronRight className="w-6 h-6 text-gray-600" />
+          <ChevronRight className="w-6 h-6 text-indigo-400" />
         </button>
       </div>
 
@@ -57,7 +57,7 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
         {DAY_NAMES.map((d, i) => (
           <div
             key={d}
-            className={`text-center text-sm font-bold pb-2 ${
+            className={`text-center text-sm font-extrabold pb-2 ${
               i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-400'
             }`}
           >
@@ -67,7 +67,7 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
       </div>
 
       {/* 날짜 그리드 */}
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-1.5">
         {blanks.map((_, i) => (
           <div key={`b${i}`} className="aspect-square" />
         ))}
@@ -78,13 +78,12 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
           const isToday = dateKey === todayKey
           const dayOfWeek = new Date(year, month, day).getDay()
 
-          // 잠금 모드: 오늘 외 날짜는 클릭 불가
           const isLocked = profile.stampLock && !isToday
 
           const dayColor =
             dayOfWeek === 0 ? 'text-red-500' :
             dayOfWeek === 6 ? 'text-blue-500' :
-            'text-gray-700'
+            'text-gray-600'
 
           return (
             <button
@@ -92,20 +91,21 @@ export function Calendar({ profile, year, month, onPrevMonth, onNextMonth, onTog
               onClick={() => !isLocked && onToggleStamp(day)}
               disabled={isLocked}
               className={`relative aspect-square rounded-2xl flex items-center justify-center transition-all duration-150
+                shadow-sm
                 ${isToday
-                  ? 'ring-2 ring-indigo-400 ring-offset-1 bg-indigo-50'
+                  ? 'border-2 border-indigo-400 bg-indigo-50/40 shadow-indigo-100'
                   : stampData
-                    ? 'bg-slate-50'
-                    : 'bg-gray-50 hover:bg-gray-100'
+                    ? 'border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50'
+                    : 'border-2 border-gray-100 bg-white hover:border-indigo-200 hover:bg-indigo-50/30 hover:shadow-md'
                 }
                 ${!isLocked ? 'active:scale-90' : 'cursor-default'}
               `}
             >
               {/* 날짜 숫자 */}
               <span
-                className={`absolute top-1.5 left-2 text-xs font-bold z-10 ${dayColor} ${
-                  isToday ? 'text-indigo-600' : ''
-                }`}
+                className={`absolute top-1.5 left-2 text-xs font-bold z-10
+                  ${isToday ? 'text-indigo-600' : dayColor}
+                `}
               >
                 {day}
               </span>
