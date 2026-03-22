@@ -183,6 +183,14 @@
 - **구현 내용**: public/stamps/ 폴더에 더 추가 → types.ts 경로 등록
 - **목적**: 더 많은 캐릭터 선택지
 
+### 4. 달력 UI/UX 개선 (2026-03-23) ✅
+- [x] 날짜 숫자 항상 선명하게 — `opacity-30` 완전 제거
+- [x] 날짜 셀 border 제거 — `border-2 border-transparent` 제거, 배경색으로만 구분
+- [x] 잠금 날짜는 cursor-default 유지, 흐림 없음
+- [x] 오늘 날짜 ring-2 ring-indigo-400 + bg-indigo-50 강조
+- [x] 도장 찍힌 날 bg-slate-50으로 미묘한 구분
+- [x] 비어있는 날 bg-gray-50, hover:bg-gray-100으로 인터랙션 개선
+
 ---
 
 ## 비슷한 기능 추가 아이디어 (프로필 관련)
