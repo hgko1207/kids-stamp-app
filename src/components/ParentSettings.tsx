@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
-import { AppData, GiftItem } from '../types'
+import { AppData, GiftItem, GENDER_EMOJI } from '../types'
+import { isImageSrc } from '../utils/stamp'
 
 interface Props {
   appData: AppData
@@ -25,8 +26,13 @@ export function ParentSettings({ appData, onSave, onClose }: Props) {
   }
 
   const addStamp = () => {
-    const url = prompt('도장 이미지 주소(URL) 또는 이모지를 입력하세요:')
-    if (url?.trim()) update('stampImages', [...child.stampImages, url.trim()])
+    const input = prompt(
+      '이모지 또는 이미지 경로를 입력하세요\n\n' +
+      '이모지 예시: 🤖 🚗 ⭐\n' +
+      '로컬 이미지: /stamps/carbot1.png\n' +
+      '인터넷 이미지: https://...'
+    )
+    if (input?.trim()) update('stampImages', [...child.stampImages, input.trim()])
   }
 
   const removeStamp = (idx: number) => {
@@ -82,6 +88,32 @@ export function ParentSettings({ appData, onSave, onClose }: Props) {
       {/* 설정 내용 */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
 
+        {/* 도장 잠금 — 항상 맨 위 노출 */}
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <p className="font-bold text-gray-800 flex items-center gap-1.5">
+              🔒 도장 찍기 잠금
+            </p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {child.stampLock
+                ? '오늘 날짜만 찍을 수 있어요'
+                : '모든 날짜를 자유롭게 수정할 수 있어요'}
+            </p>
+          </div>
+          <button
+            onClick={() => update('stampLock', !child.stampLock)}
+            className={`relative w-14 h-8 rounded-full transition-colors duration-200 flex-shrink-0 ${
+              child.stampLock ? 'bg-orange-400' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
+                child.stampLock ? 'translate-x-7' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+
         {/* 기본 정보 */}
         <SectionCard
           title="기본 정보"
@@ -100,22 +132,23 @@ export function ParentSettings({ appData, onSave, onClose }: Props) {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-500 mb-1 block">테마</label>
-              <input
-                type="text"
-                value={child.theme}
-                onChange={e => update('theme', e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-base focus:outline-none focus:border-indigo-400"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-gray-500 mb-1 block">이모지 아이콘</label>
-              <input
-                type="text"
-                value={child.emoji}
-                onChange={e => update('emoji', e.target.value)}
-                className="w-24 border border-gray-200 rounded-xl px-3 py-2.5 text-2xl text-center focus:outline-none focus:border-indigo-400"
-              />
+              <label className="text-xs font-bold text-gray-500 mb-2 block">성별</label>
+              <div className="flex gap-3">
+                {(['male', 'female'] as const).map(g => (
+                  <button
+                    key={g}
+                    onClick={() => update('gender', g)}
+                    className={`flex-1 py-3 rounded-2xl border-2 font-bold text-base transition-all flex items-center justify-center gap-2 ${
+                      child.gender === g
+                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
+                        : 'border-gray-200 bg-white text-gray-600'
+                    }`}
+                  >
+                    <span className="text-2xl">{GENDER_EMOJI[g]}</span>
+                    {g === 'male' ? '남자' : '여자'}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </SectionCard>
@@ -168,15 +201,17 @@ export function ParentSettings({ appData, onSave, onClose }: Props) {
           onToggle={() => toggleSection('stamps')}
         >
           <div>
-            <p className="text-xs text-gray-400 mb-3">
-              이모지 또는 이미지 URL을 추가하세요.<br />
-              헬로카봇 이미지는 공식 홈페이지에서 이미지 주소를 복사해서 붙여넣기 하세요.
-            </p>
+            <div className="bg-indigo-50 rounded-2xl p-3 mb-3 text-xs text-indigo-700 leading-relaxed">
+              <p className="font-bold mb-1">💡 캐릭터 이미지 사용법</p>
+              <p>1. 이미지 파일을 <span className="font-bold">public/stamps/</span> 폴더에 넣기</p>
+              <p>2. + 버튼 → <span className="font-mono font-bold">/stamps/파일명.png</span> 입력</p>
+              <p className="mt-1 text-indigo-500">이모지(🤖)도 그냥 입력하면 됩니다</p>
+            </div>
             <div className="flex flex-wrap gap-2 mb-3">
               {child.stampImages.map((stamp, idx) => (
                 <div key={idx} className="relative">
                   <div className="w-14 h-14 rounded-2xl border-2 border-gray-100 bg-white flex items-center justify-center overflow-hidden">
-                    {stamp.startsWith('http') || stamp.startsWith('data:image') ? (
+                    {isImageSrc(stamp) ? (
                       <img src={stamp} alt="" className="w-[80%] h-[80%] object-contain" />
                     ) : (
                       <span className="text-2xl">{stamp}</span>

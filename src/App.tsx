@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Star, Settings } from 'lucide-react'
 import { useAppData } from './hooks/useAppData'
+import { useStampFeedback } from './hooks/useStampFeedback'
 import { ProgressCard } from './components/ProgressCard'
 import { StampPalette } from './components/StampPalette'
 import { Calendar } from './components/Calendar'
 import { GiftRoulette } from './components/GiftRoulette'
 import { ParentSettings } from './components/ParentSettings'
-import { AppData } from './types'
+import { PraiseToast } from './components/PraiseToast'
+import { AppData, GENDER_EMOJI } from './types'
+import { getRandomPraise } from './utils/streak'
 
 type ChildKey = 'son1' | 'son2'
 
@@ -18,17 +21,18 @@ export default function App() {
   const [showCelebration, setShowCelebration] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [celebrationShownFor, setCelebrationShownFor] = useState<string | null>(null)
+  const [praiseMessage, setPraiseMessage] = useState<string | null>(null)
+
+  const stampFeedback = useStampFeedback()
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
   const profile = appData[activeTab]
 
-  // 탭 전환 시 도장 선택 초기화
   useEffect(() => {
     setSelectedStamp('random')
   }, [activeTab])
 
-  // 현재 월 도장 개수
   const currentMonthCount = Object.keys(profile.stamps).filter(key => {
     const [y, m] = key.split('-')
     return parseInt(y) === year && parseInt(m) === month + 1
@@ -45,7 +49,10 @@ export default function App() {
         return { ...prev, [activeTab]: { ...prev[activeTab], stamps } }
       }
 
-      // 도장 찍기
+      // 도장 찍기 — 효과음 + 진동 + 칭찬 메시지
+      stampFeedback()
+      setTimeout(() => setPraiseMessage(getRandomPraise()), 50)
+
       const stampArray = prev[activeTab].stampImages
       const icon =
         selectedStamp === 'random'
@@ -54,7 +61,6 @@ export default function App() {
       const rotation = Math.floor(Math.random() * 30) - 15
       stamps[dateKey] = { icon, rotation }
 
-      // 목표 달성 체크
       const newCount = Object.keys(stamps).filter(k => {
         const [y, m] = k.split('-')
         return parseInt(y) === year && parseInt(m) === month + 1
@@ -65,7 +71,7 @@ export default function App() {
         setTimeout(() => {
           setShowCelebration(true)
           setCelebrationShownFor(goalKey)
-        }, 200)
+        }, 400)
       }
 
       return { ...prev, [activeTab]: { ...prev[activeTab], stamps } }
@@ -82,8 +88,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans flex justify-center">
-      <div className="w-full max-w-2xl bg-white min-h-screen flex flex-col">
+    <div className="min-h-screen bg-slate-50 font-sans">
+      <div className="w-full bg-white min-h-screen flex flex-col">
 
         {/* 헤더 */}
         <div className="bg-white px-5 pt-6 pb-3 border-b border-gray-100 sticky top-0 z-30">
@@ -113,10 +119,7 @@ export default function App() {
                     : tabColor[key].inactive
                 }`}
               >
-                {appData[key].emoji} {appData[key].name}
-                <span className="text-xs font-normal text-gray-400 block sm:inline sm:ml-1.5">
-                  ({appData[key].theme})
-                </span>
+                {GENDER_EMOJI[appData[key].gender]} {appData[key].name}
               </button>
             ))}
           </div>
@@ -152,6 +155,12 @@ export default function App() {
           </p>
         </div>
       </div>
+
+      {/* 칭찬 메시지 토스트 */}
+      <PraiseToast
+        message={praiseMessage}
+        onDone={() => setPraiseMessage(null)}
+      />
 
       {/* 선물 뽑기 모달 */}
       {showCelebration && (

@@ -1,5 +1,6 @@
 import { Gift, Award } from 'lucide-react'
 import { ChildProfile } from '../types'
+import { calcStreak } from '../utils/streak'
 
 interface Props {
   profile: ChildProfile
@@ -10,16 +11,22 @@ interface Props {
 export function ProgressCard({ profile, count, onShowCelebration }: Props) {
   const pct = Math.min((count / profile.goal) * 100, 100)
   const isGoalReached = count >= profile.goal
+  const streak = calcStreak(profile.stamps)
 
   return (
     <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 mb-4">
-      <div className="flex justify-between items-end mb-4">
+      <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="text-lg font-bold text-gray-800 mb-0.5">이번 달 칭찬 도장</h2>
           <p className="text-gray-500 text-sm">
             목표 <span className="font-bold text-gray-700">{profile.goal}개</span> 중{' '}
             <span className="font-bold text-indigo-600">{count}개</span> 모았어요!
           </p>
+          {streak >= 2 && (
+            <p className="text-orange-500 font-bold text-sm mt-1">
+              🔥 {streak}일 연속 중!
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-center w-12 h-12 bg-indigo-50 rounded-2xl">
           {isGoalReached
