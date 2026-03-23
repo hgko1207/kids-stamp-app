@@ -26,20 +26,6 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
     }))
   }
 
-  const addStamp = () => {
-    const input = prompt(
-      '이모지 또는 이미지 경로를 입력하세요\n\n' +
-      '이모지 예시: 🤖 🚗 ⭐\n' +
-      '로컬 이미지: /stamps/carbot1.png\n' +
-      '인터넷 이미지: https://...'
-    )
-    if (input?.trim()) update('stampImages', [...child.stampImages, input.trim()])
-  }
-
-  const removeStamp = (idx: number) => {
-    update('stampImages', child.stampImages.filter((_, i) => i !== idx))
-  }
-
   const addGift = () => {
     const name = prompt('선물 이름을 입력하세요:')
     if (!name?.trim()) return
@@ -225,35 +211,29 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
         >
           <div className="space-y-3">
             <div className="bg-indigo-50 rounded-xl p-3 text-xs text-indigo-600 leading-relaxed">
-              <p className="font-bold mb-1">💡 이미지 추가 방법</p>
-              <p>• 이미지 → <span className="font-mono font-bold">public/stamps/</span> 폴더에 넣기</p>
-              <p>• + 버튼 → <span className="font-mono font-bold">/stamps/파일명.png</span> 입력</p>
-              <p>• 이모지(🤖)는 바로 입력 가능</p>
+              <p className="font-bold mb-1.5">💡 이미지 추가 방법 (폴더 기반 자동 반영)</p>
+              <p>• 첫번째 탭 이미지 →</p>
+              <p className="font-mono font-bold ml-2">src/assets/stamps/child1/</p>
+              <p className="mt-1">• 두번째 탭 이미지 →</p>
+              <p className="font-mono font-bold ml-2">src/assets/stamps/child2/</p>
+              <p className="mt-1.5 text-indigo-400">파일 추가 후 빌드/배포하면 자동 반영돼요</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              {child.stampImages.map((stamp, idx) => (
-                <div key={idx} className="relative">
-                  <div className="w-16 h-16 rounded-2xl border-2 border-gray-100 bg-white shadow-sm flex items-center justify-center overflow-hidden">
-                    {isImageSrc(stamp) ? (
-                      <img src={stamp} alt="" className="w-[82%] h-[82%] object-contain" />
-                    ) : (
-                      <span className="text-2xl">{stamp}</span>
-                    )}
+              {child.stampImages.length === 0 ? (
+                <p className="text-sm text-gray-400 py-2">폴더에 이미지가 없어요</p>
+              ) : (
+                child.stampImages.map((stamp, idx) => (
+                  <div key={idx} className="relative">
+                    <div className="w-16 h-16 rounded-2xl border-2 border-gray-100 bg-white shadow-sm flex items-center justify-center overflow-hidden">
+                      {isImageSrc(stamp) ? (
+                        <img src={stamp} alt="" className="w-[82%] h-[82%] object-contain" />
+                      ) : (
+                        <span className="text-2xl">{stamp}</span>
+                      )}
+                    </div>
                   </div>
-                  <button
-                    onClick={() => removeStamp(idx)}
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center shadow-sm active:scale-90"
-                  >
-                    <X className="w-3 h-3 text-white" />
-                  </button>
-                </div>
-              ))}
-              <button
-                onClick={addStamp}
-                className="w-16 h-16 rounded-2xl border-2 border-dashed border-gray-300 bg-white flex items-center justify-center hover:border-indigo-400 hover:bg-indigo-50 transition-all active:scale-90"
-              >
-                <Plus className="w-6 h-6 text-gray-400" />
-              </button>
+                ))
+              )}
             </div>
           </div>
         </Section>
