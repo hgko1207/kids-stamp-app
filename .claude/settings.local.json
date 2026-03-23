@@ -6,7 +6,26 @@
       "Bash(npm install:*)",
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(node -e \":*)",
+      "Bash(cp public/stamps/이글하이더.jpg src/assets/stamps/son1/)",
+      "Bash(cp public/stamps/마이티캅스.jpg src/assets/stamps/son1/)",
+      "Bash(cp public/stamps/파워크루저.jpg src/assets/stamps/son1/)",
+      "Bash(cp public/stamps/사파리세이버.jpg src/assets/stamps/son1/)",
+      "Bash(cp public/stamps/스타가디언.png src/assets/stamps/son1/)",
+      "Bash(mkdir -p src/assets/stamps/child1 src/assets/stamps/child2)",
+      "Bash(cp src/assets/stamps/son1/*.jpg src/assets/stamps/child1/)",
+      "Bash(cp src/assets/stamps/son1/*.png src/assets/stamps/child1/)",
+      "Bash(cp src/assets/stamps/son2/*.jpg src/assets/stamps/child2/)",
+      "Bash(cp src/assets/stamps/son2/*.png src/assets/stamps/child2/)",
+      "Bash(cp public/stamps/베어하이더.jpg src/assets/stamps/child1/)",
+      "Bash(cp public/stamps/저스포스.jpg src/assets/stamps/child1/)",
+      "Bash(cp public/stamps/베어하이더.jpg src/assets/stamps/child2/)",
+      "Bash(cp public/stamps/저스포스.jpg src/assets/stamps/child2/)"
     ]
   }
 }
