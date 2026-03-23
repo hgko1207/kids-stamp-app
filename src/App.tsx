@@ -176,6 +176,7 @@ export default function App() {
       {showSettings && (
         <ParentSettings
           appData={appData}
+          initialChild={activeTab}
           onSave={handleSaveSettings}
           onClose={() => setShowSettings(false)}
         />

@@ -5,15 +5,16 @@ import { isImageSrc } from '../utils/stamp'
 
 interface Props {
   appData: AppData
+  initialChild?: 'son1' | 'son2'
   onSave: (data: AppData) => void
   onClose: () => void
 }
 
 type ChildKey = 'son1' | 'son2'
 
-export function ParentSettings({ appData, onSave, onClose }: Props) {
+export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose }: Props) {
   const [draft, setDraft] = useState<AppData>(JSON.parse(JSON.stringify(appData)))
-  const [activeChild, setActiveChild] = useState<ChildKey>('son1')
+  const [activeChild, setActiveChild] = useState<ChildKey>(initialChild)
   const [expandedSection, setExpandedSection] = useState<string>('basic')
 
   const child = draft[activeChild]
