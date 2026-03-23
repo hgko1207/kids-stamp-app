@@ -137,6 +137,8 @@ export default function App() {
             stamps={profile.stampImages}
             selected={selectedStamp}
             onSelect={setSelectedStamp}
+            childName={profile.name}
+            childEmoji={GENDER_EMOJI[profile.gender]}
           />
 
           <Calendar

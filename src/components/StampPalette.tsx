@@ -4,6 +4,8 @@ interface Props {
   stamps: string[]
   selected: string
   onSelect: (stamp: string) => void
+  childName?: string
+  childEmoji?: string
 }
 
 // 모든 버튼 동일 크기: 이미지 영역 + 이름 영역
@@ -11,12 +13,19 @@ const BTN_CLS = 'w-20 h-24'
 const IMG_AREA = 'w-full flex items-center justify-center' // 이미지/이모지 영역
 const NAME_AREA = 'w-full px-2 pb-1.5 text-center' // 이름 텍스트 영역
 
-export function StampPalette({ stamps, selected, onSelect }: Props) {
+export function StampPalette({ stamps, selected, onSelect, childName, childEmoji }: Props) {
   return (
     <div className="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 mb-4">
-      <h2 className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-        <span>🎨</span> 어떤 도장을 찍을까요?
-      </h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
+          <span>🎨</span> 어떤 도장을 찍을까요?
+        </h2>
+        {childName && (
+          <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-full">
+            {childEmoji} {childName} 도장
+          </span>
+        )}
+      </div>
       <div className="flex flex-wrap gap-2">
 
         {/* 랜덤 버튼 */}
