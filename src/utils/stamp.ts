@@ -17,5 +17,11 @@ export function isImageSrc(value: string): boolean {
 export function getStampName(value: string): string {
   if (!isImageSrc(value)) return ''
   const filename = value.split('/').pop() ?? ''
-  return filename.replace(/\.[^.]+$/, '')
+  // 확장자 제거
+  let name = filename.replace(/\.[^.]+$/, '')
+  // URL 인코딩된 한글 디코딩 (%EC%9D%B4... → 이글하이더)
+  try { name = decodeURIComponent(name) } catch { /* ignore */ }
+  // Vite 해시 접미사 제거 (-Ccia_-Tg 같은 영숫자 6자 이상)
+  name = name.replace(/-[A-Za-z0-9_-]{6,}$/, '')
+  return name
 }
