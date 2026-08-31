@@ -5,12 +5,14 @@ interface Props {
   childName: string
   gifts: GiftItem[]
   goalCount: number
+  /** 뽑기가 시작되는 순간 호출 — 중복 뽑기를 막기 위해 즉시 기록한다 */
+  onClaim: (gift: GiftItem) => void
   onClose: () => void
 }
 
 type Phase = 'intro' | 'spinning' | 'result'
 
-export function GiftRoulette({ childName, gifts, goalCount, onClose }: Props) {
+export function GiftRoulette({ childName, gifts, goalCount, onClaim, onClose }: Props) {
   const [phase, setPhase] = useState<Phase>('intro')
   const [resultGift, setResultGift] = useState<GiftItem | null>(null)
 
@@ -20,6 +22,7 @@ export function GiftRoulette({ childName, gifts, goalCount, onClose }: Props) {
     // 랜덤으로 당첨 선물 결정
     const winner = gifts[Math.floor(Math.random() * gifts.length)]
     setResultGift(winner)
+    onClaim(winner)
 
     setTimeout(() => {
       setPhase('result')

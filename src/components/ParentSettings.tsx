@@ -160,13 +160,17 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
 
         {/* 목표 도장 수 */}
         <Section
-          title="이달 목표 도장 수"
+          title="선물까지 필요한 도장 수"
           icon="🎯"
           color="bg-green-50"
           expanded={expandedSection === 'goal'}
           onToggle={() => toggleSection('goal')}
         >
           <div className="space-y-3">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              달이 바뀌어도 진행도는 초기화되지 않아요. 도장을 이만큼 모으면
+              선물을 뽑고, 그때부터 다시 0개로 새로 시작해요.
+            </p>
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">목표</span>
               <span className="text-lg font-extrabold text-indigo-600">{child.goal}개</span>
@@ -191,9 +195,9 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
               <input
                 type="number"
                 min={1}
-                max={31}
+                max={100}
                 value={child.goal}
-                onChange={e => update('goal', Math.max(1, Math.min(31, parseInt(e.target.value) || 1)))}
+                onChange={e => update('goal', Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))}
                 className="w-20 bg-slate-50 border border-gray-200 rounded-xl px-3 py-2 text-center font-bold text-gray-800 focus:outline-none focus:border-indigo-400 focus:bg-white"
               />
               <span className="text-sm text-gray-400">개</span>
@@ -296,8 +300,9 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
             </button>
             <button
               onClick={() => {
-                if (confirm(`${child.name}의 모든 도장 데이터를 지울까요? 복구할 수 없어요!`)) {
+                if (confirm(`${child.name}의 모든 도장과 선물 기록을 지울까요? 복구할 수 없어요!`)) {
                   update('stamps', {})
+                  update('claims', [])
                 }
               }}
               className="w-full py-3.5 bg-red-50 border border-red-100 text-red-600 rounded-2xl font-bold text-sm hover:bg-red-100 transition-all active:scale-95"

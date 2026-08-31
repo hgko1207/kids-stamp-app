@@ -8,8 +8,9 @@ import { Calendar } from './components/Calendar'
 import { GiftRoulette } from './components/GiftRoulette'
 import { ParentSettings } from './components/ParentSettings'
 import { PraiseToast } from './components/PraiseToast'
-import { AppData, GENDER_EMOJI } from './types'
+import { AppData, GENDER_EMOJI, GiftItem } from './types'
 import { getRandomPraise } from './utils/streak'
+import { countStampsInMonth } from './utils/progress'
 
 type ChildKey = 'son1' | 'son2'
 
@@ -33,10 +34,11 @@ export default function App() {
     setSelectedStamp('random')
   }, [activeTab])
 
-  const currentMonthCount = Object.keys(profile.stamps).filter(key => {
-    const [y, m] = key.split('-')
-    return parseInt(y) === year && parseInt(m) === month + 1
-  }).length
+  // 달력에서 보고 있는 달이 실제 이번 달인지 (라벨용)
+  const today = new Date()
+  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth()
+  const monthLabel = isCurrentMonth ? '이번 달' : `${month + 1}월`
+  const viewedMonthCount = countStampsInMonth(profile.stamps, year, month)
 
   const handleToggleStamp = (day: number) => {
     const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
@@ -61,12 +63,13 @@ export default function App() {
       const rotation = Math.floor(Math.random() * 30) - 15
       stamps[dateKey] = { icon, rotation }
 
-      const newCount = Object.keys(stamps).filter(k => {
-        const [y, m] = k.split('-')
-        return parseInt(y) === year && parseInt(m) === month + 1
-      }).length
+      // 누적 기준: 마지막 선물 이후 모은 도장이 목표에 닿았는지
+      const claims = prev[activeTab].claims ?? []
+      const base = claims.length > 0 ? claims[claims.length - 1].atCount : 0
+      const newCount = Object.keys(stamps).length - base
 
-      const goalKey = `${activeTab}-${year}-${month + 1}`
+      // 선물을 받을 때마다 키가 바뀌므로 다음 판에서 다시 축하가 뜬다
+      const goalKey = `${activeTab}-${claims.length}`
       if (newCount === prev[activeTab].goal && celebrationShownFor !== goalKey) {
         setTimeout(() => {
           setShowCelebration(true)
@@ -80,6 +83,25 @@ export default function App() {
 
   const handleSaveSettings = (newData: AppData) => {
     setAppData(newData)
+  }
+
+  // 선물을 뽑는 순간 기록 — 이 시점의 누적 개수가 다음 판의 시작점이 된다
+  const handleClaimGift = (gift: GiftItem) => {
+    setAppData(prev => {
+      const child = prev[activeTab]
+      const now = new Date()
+      const claims = child.claims ?? []
+      const base = claims.length > 0 ? claims[claims.length - 1].atCount : 0
+      const claim = {
+        id: String(Date.now()),
+        date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`,
+        emoji: gift.emoji,
+        name: gift.name,
+        // 딱 목표만큼만 소진한다 — 목표를 넘겨 모은 도장은 다음 판으로 이월된다
+        atCount: base + Math.max(1, child.goal),
+      }
+      return { ...prev, [activeTab]: { ...child, claims: [...claims, claim] } }
+    })
   }
 
   const tabColor = {
@@ -129,7 +151,8 @@ export default function App() {
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <ProgressCard
             profile={profile}
-            count={currentMonthCount}
+            monthCount={viewedMonthCount}
+            monthLabel={monthLabel}
             onShowCelebration={() => setShowCelebration(true)}
           />
 
@@ -170,6 +193,7 @@ export default function App() {
           childName={profile.name}
           gifts={profile.gifts}
           goalCount={profile.goal}
+          onClaim={handleClaimGift}
           onClose={() => setShowCelebration(false)}
         />
       )}
