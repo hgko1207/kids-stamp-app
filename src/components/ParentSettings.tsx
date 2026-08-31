@@ -244,7 +244,7 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
 
         {/* 선물 목록 */}
         <Section
-          title="선물 뽑기 목록"
+          title="선물 목록"
           icon="🎁"
           color="bg-yellow-50"
           expanded={expandedSection === 'gifts'}
@@ -263,12 +263,12 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
                 </button>
               </div>
             ))}
-            {child.gifts.length < 6 && (
+            {child.gifts.length < 10 && (
               <button
                 onClick={addGift}
                 className="w-full py-3.5 border-2 border-dashed border-gray-200 rounded-2xl text-gray-400 font-bold text-sm hover:border-indigo-300 hover:text-indigo-400 transition-all flex items-center justify-center gap-2 active:scale-95"
               >
-                <Plus className="w-4 h-4" /> 선물 추가 ({child.gifts.length}/6)
+                <Plus className="w-4 h-4" /> 선물 추가 ({child.gifts.length}/10)
               </button>
             )}
           </div>

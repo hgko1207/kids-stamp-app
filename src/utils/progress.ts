@@ -18,7 +18,7 @@ export interface GiftProgress {
 /**
  * 누적 방식 진행도 계산.
  *
- * 기준점은 마지막으로 뽑은 선물의 atCount다. goal 값을 나중에 바꿔도
+ * 기준점은 마지막으로 받은 선물의 atCount다. goal 값을 나중에 바꿔도
  * 이미 받은 선물이 무효가 되거나 중복 지급되지 않는다.
  */
 export function calcGiftProgress(profile: ChildProfile): GiftProgress {

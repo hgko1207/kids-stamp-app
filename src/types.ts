@@ -9,10 +9,10 @@ export interface GiftItem {
   name: string
 }
 
-/** 선물을 뽑은 기록 — 누적 도장에서 어디까지 보상받았는지 기준점이 된다 */
+/** 선물을 받은 기록 — 누적 도장에서 어디까지 보상받았는지 기준점이 된다 */
 export interface GiftClaim {
   id: string
-  date: string     // 뽑은 날짜 (YYYY-MM-DD)
+  date: string     // 선물을 받은 날짜 (YYYY-MM-DD)
   emoji: string
   name: string
   atCount: number  // 여기까지의 도장을 보상으로 소진했다는 기준점 (다음 판의 시작 위치)
@@ -60,10 +60,15 @@ export const DEFAULT_APP_DATA: AppData = {
       '/stamps/스타가디언.png',
     ],
     gifts: [
-      { id: '1', emoji: '🍦', name: '아이스크림' },
-      { id: '2', emoji: '🎮', name: '게임 30분' },
-      { id: '3', emoji: '🧸', name: '장난감' },
-      { id: '4', emoji: '🍕', name: '피자 파티' },
+      { id: '1', emoji: '🎢', name: '놀이공원 가기' },
+      { id: '2', emoji: '🦁', name: '동물원 가기' },
+      { id: '3', emoji: '🏰', name: '키즈카페 가기' },
+      { id: '4', emoji: '🏊', name: '수영장 가기' },
+      { id: '5', emoji: '🎭', name: '뮤지컬 보러 가기' },
+      { id: '6', emoji: '🧸', name: '장난감 사러 가기' },
+      { id: '7', emoji: '🃏', name: '포켓몬 카드 사기' },
+      { id: '8', emoji: '📺', name: '하루 종일 TV 보기' },
+      { id: '9', emoji: '🎮', name: '하루 종일 게임하기' },
     ],
     claims: [],
   },
@@ -83,10 +88,15 @@ export const DEFAULT_APP_DATA: AppData = {
       '/stamps/스타가디언.png',
     ],
     gifts: [
-      { id: '1', emoji: '🍦', name: '아이스크림' },
-      { id: '2', emoji: '🎮', name: '게임 30분' },
-      { id: '3', emoji: '🧸', name: '장난감' },
-      { id: '4', emoji: '🎠', name: '놀이공원' },
+      { id: '1', emoji: '🎢', name: '놀이공원 가기' },
+      { id: '2', emoji: '🦁', name: '동물원 가기' },
+      { id: '3', emoji: '🏰', name: '키즈카페 가기' },
+      { id: '4', emoji: '🏊', name: '수영장 가기' },
+      { id: '5', emoji: '🎭', name: '뮤지컬 보러 가기' },
+      { id: '6', emoji: '🧸', name: '장난감 사러 가기' },
+      { id: '7', emoji: '🃏', name: '포켓몬 카드 사기' },
+      { id: '8', emoji: '📺', name: '하루 종일 TV 보기' },
+      { id: '9', emoji: '🎮', name: '하루 종일 게임하기' },
     ],
     claims: [],
   },

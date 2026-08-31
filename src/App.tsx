@@ -5,7 +5,8 @@ import { useStampFeedback } from './hooks/useStampFeedback'
 import { ProgressCard } from './components/ProgressCard'
 import { StampPalette } from './components/StampPalette'
 import { Calendar } from './components/Calendar'
-import { GiftRoulette } from './components/GiftRoulette'
+import { GiftPicker } from './components/GiftPicker'
+import { GiftPreview } from './components/GiftPreview'
 import { ParentSettings } from './components/ParentSettings'
 import { PraiseToast } from './components/PraiseToast'
 import { AppData, GENDER_EMOJI, GiftItem } from './types'
@@ -153,7 +154,11 @@ export default function App() {
             profile={profile}
             monthCount={viewedMonthCount}
             monthLabel={monthLabel}
-            onShowCelebration={() => setShowCelebration(true)}
+          />
+
+          <GiftPreview
+            profile={profile}
+            onShowPicker={() => setShowCelebration(true)}
           />
 
           <StampPalette
@@ -187,9 +192,9 @@ export default function App() {
         onDone={() => setPraiseMessage(null)}
       />
 
-      {/* 선물 뽑기 모달 */}
+      {/* 선물 고르기 모달 */}
       {showCelebration && (
-        <GiftRoulette
+        <GiftPicker
           childName={profile.name}
           gifts={profile.gifts}
           goalCount={profile.goal}

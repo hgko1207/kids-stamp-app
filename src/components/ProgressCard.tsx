@@ -9,10 +9,9 @@ interface Props {
   monthCount: number
   /** "이번 달" 또는 "8월" 처럼 보고 있는 달의 이름 */
   monthLabel: string
-  onShowCelebration: () => void
 }
 
-export function ProgressCard({ profile, monthCount, monthLabel, onShowCelebration }: Props) {
+export function ProgressCard({ profile, monthCount, monthLabel }: Props) {
   const { total, current, goal, remaining, reached, claimedCount } = calcGiftProgress(profile)
   const pct = Math.min((current / goal) * 100, 100)
   const streak = calcStreak(profile.stamps)
@@ -99,14 +98,6 @@ export function ProgressCard({ profile, monthCount, monthLabel, onShowCelebratio
         </p>
       )}
 
-      {reached && (
-        <button
-          onClick={onShowCelebration}
-          className="w-full mt-4 p-3.5 bg-gradient-to-r from-yellow-300 to-orange-400 text-white rounded-2xl font-bold shadow-md active:scale-95 transition-transform animate-pulse text-base"
-        >
-          🎉 목표 달성! 선물 뽑으러 가기! 🎉
-        </button>
-      )}
     </div>
   )
 }
