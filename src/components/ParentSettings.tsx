@@ -285,7 +285,7 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
           <div className="space-y-2">
             <button
               onClick={() => {
-                if (confirm(`${child.name}의 이번 달 도장을 모두 지울까요?`)) {
+                if (confirm(`${child.name}이 이번 달에 찍은 도장을 지울까요? 누적 개수도 그만큼 줄어들어요.`)) {
                   const now = new Date()
                   const prefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
                   const newStamps = Object.fromEntries(
@@ -296,7 +296,7 @@ export function ParentSettings({ appData, initialChild = 'son1', onSave, onClose
               }}
               className="w-full py-3.5 bg-orange-50 border border-orange-100 text-orange-600 rounded-2xl font-bold text-sm hover:bg-orange-100 transition-all active:scale-95"
             >
-              이번 달 도장 초기화
+              이번 달 도장만 지우기
             </button>
             <button
               onClick={() => {

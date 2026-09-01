@@ -50,3 +50,24 @@ export function countStampsInMonth(
     return parseInt(y) === year && parseInt(m) === month + 1
   }).length
 }
+
+export interface MonthlyCount {
+  key: string    // YYYY-MM
+  label: string  // "2026년 8월"
+  count: number
+}
+
+/** 도장을 월별로 묶어 최신 달부터 반환 — "나머지는 어느 달에 찍었지?"에 답하기 위한 것 */
+export function monthlyBreakdown(stamps: ChildProfile['stamps']): MonthlyCount[] {
+  const byMonth = new Map<string, number>()
+  for (const dateKey of Object.keys(stamps)) {
+    const ym = dateKey.slice(0, 7)
+    byMonth.set(ym, (byMonth.get(ym) ?? 0) + 1)
+  }
+  return [...byMonth.entries()]
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([key, count]) => {
+      const [y, m] = key.split('-')
+      return { key, label: `${y}년 ${parseInt(m)}월`, count }
+    })
+}

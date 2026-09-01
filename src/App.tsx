@@ -6,7 +6,6 @@ import { ProgressCard } from './components/ProgressCard'
 import { StampPalette } from './components/StampPalette'
 import { Calendar } from './components/Calendar'
 import { GiftPicker } from './components/GiftPicker'
-import { GiftPreview } from './components/GiftPreview'
 import { ParentSettings } from './components/ParentSettings'
 import { PraiseToast } from './components/PraiseToast'
 import { AppData, GENDER_EMOJI, GiftItem } from './types'
@@ -154,10 +153,6 @@ export default function App() {
             profile={profile}
             monthCount={viewedMonthCount}
             monthLabel={monthLabel}
-          />
-
-          <GiftPreview
-            profile={profile}
             onShowPicker={() => setShowCelebration(true)}
           />
 
