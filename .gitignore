@@ -9,7 +9,9 @@ dist/
 npm-debug.log*
 
 # Editor
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 *.suo
 *.ntvs*
 *.njsproj
@@ -24,3 +26,9 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# --- Claude Code 팀 세팅 (team-ai-kit) ---
+# 개인 설정·메모는 공유하지 않는다
+.claude/settings.local.json
+CLAUDE.local.md
+.claude/agent-memory-local/

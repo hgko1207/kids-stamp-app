@@ -255,3 +255,6 @@
 | `src/components/Calendar.tsx` | 달력 + 도장 찍기 |
 | `src/components/GiftRoulette.tsx` | 목표 달성 선물 뽑기 모달 |
 | `src/components/ParentSettings.tsx` | 부모 전용 설정 화면 |
+
+## 완료
+
