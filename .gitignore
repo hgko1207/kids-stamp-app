@@ -24,3 +24,6 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Cloudflare wrangler 로컬 캐시
+.wrangler/
