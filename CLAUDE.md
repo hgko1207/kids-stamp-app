@@ -60,9 +60,9 @@ src/
 
 ## 작업 방식
 
-- 파일 여러 개를 고치는 작업은 `/team-ai:plan-feature`로 계획을 세워 `plan.md`에 적고, 승인 후 구현한다.
+- 파일 여러 개를 고치는 작업은 `/cc-ready:plan-feature`로 계획을 세워 `plan.md`에 적고, 승인 후 구현한다.
 - `plan.md` 항목을 끝내면 `[x]`로 표시하고 "완료"로 옮긴다.
-- 구현 후 `/team-ai:verify`로 검증한다. 검증하지 않고 완료라고 말하지 않는다.
+- 구현 후 `/cc-ready:verify`로 검증한다. 검증하지 않고 완료라고 말하지 않는다.
 - 내 PC의 에이전트(`@planner`, `@implementer`, `@reviewer`, `@deployer`)도 쓸 수 있다.
 
 ## 작업 진행 방식
